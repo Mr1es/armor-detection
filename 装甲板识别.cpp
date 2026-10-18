@@ -99,7 +99,7 @@ int main()
 				if (ax2.y > 0) ax2 = -ax2;
 				Point2f t1 = p1 + ax1 * (len1 / 2), b1 = p1 - ax1 * (len1 / 2);
 				Point2f t2 = p2 + ax2 * (len2 / 2), b2 = p2 - ax2 * (len2 / 2);
-				Point2f corner[4] = { t1, b1, b2,t2 };
+				Point2f corner[4] = { b1, t1, t2,b2 };
 				for (int k = 0; k < 4; k++)
 				{
 					line(show, corner[k], corner[(k + 1) % 4], Scalar(0, 0, 255), 2);
@@ -110,18 +110,18 @@ int main()
 				
 				double LIGHTBAR_LENGTH = 56e-3, SMALL_ARMOR_WIDTH = 135e-3;//pnp
 				vector<Point3f>objPts;
-				if (p1.x < p2.x) {                // 灯1 在左边 
-					objPts.push_back(Point3f(0, SMALL_ARMOR_WIDTH / 2, LIGHTBAR_LENGTH / 2));
+				               // 灯1 在左边 
 					objPts.push_back(Point3f(0, -SMALL_ARMOR_WIDTH / 2, LIGHTBAR_LENGTH / 2));
 					objPts.push_back(Point3f(0, -SMALL_ARMOR_WIDTH / 2, -LIGHTBAR_LENGTH / 2));
 					objPts.push_back(Point3f(0, SMALL_ARMOR_WIDTH / 2, -LIGHTBAR_LENGTH / 2));
-				}
-				else {                            // 灯1 在右边，3D 的左右跟着换
+					objPts.push_back(Point3f(0, SMALL_ARMOR_WIDTH / 2, LIGHTBAR_LENGTH / 2));
+				
+				/*else {                            // 灯1 在右边，3D 的左右跟着换
 					objPts.push_back(Point3f(0, SMALL_ARMOR_WIDTH / 2, -LIGHTBAR_LENGTH / 2));
 					objPts.push_back(Point3f(0, -SMALL_ARMOR_WIDTH / 2, -LIGHTBAR_LENGTH / 2));
 					objPts.push_back(Point3f(0, -SMALL_ARMOR_WIDTH / 2, LIGHTBAR_LENGTH / 2));
 					objPts.push_back(Point3f(0, SMALL_ARMOR_WIDTH / 2, LIGHTBAR_LENGTH / 2));
-				}
+				}*/
 				vector<Point2f>imgpts(corner,corner + 4);
 				Mat rvec, tvec;
 				if (solvePnP(objPts, imgpts, K, dist, rvec, tvec, false, SOLVEPNP_IPPE))
